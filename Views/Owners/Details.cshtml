@@ -1,0 +1,77 @@
+﻿@using System.Security.Claims;
+@model RealEstate3.Models.Owner
+
+@{
+    ViewData["Title"] = "Szczegóły";
+}
+
+<h1>Szczegóły użytkownika</h1>
+
+<div>
+    <h4>@Model.Name @Model.Surname</h4>
+    <hr />
+<div class="row">
+<div class="col-sm-8">
+    <dl class="row">
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.Name)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Name)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.Surname)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Surname)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.Gender)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Gender)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.Birthday)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Birthday)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.Comment)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Comment)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.ContactNumber)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.ContactNumber)
+        </dd>
+    </dl>
+</div>
+<div class="col-sm-4">
+            <img class="rounded-top" src="@Model.ProfilePictureUrl" alt="@Model.Surname" style="max-width: 300px; min-height: 300px" />
+</div>
+    </div>
+</div>
+<div>
+     @if(User.Identity.IsAuthenticated)
+     {       
+       var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+       bool flag = false;
+       if(userId == Model.UserId) flag = true;  
+       if (User.IsInRole("Admin") || (User.IsInRole("Owner") && flag == true))
+       {
+        <a asp-action="Edit" asp-route-id="@Model?.Id">Edytuj profil</a> <p>|</p>
+        <a asp-action="Delete" asp-route-id="@Model?.Id">Usuń</a> <p>|</p>
+            <a asp-action="ShowTheirEstates" asp-route-id="@Model?.Id">Nieruchomości użytkownika</a> <p>|</p>
+       } else
+       {
+            <a asp-action="ShowTheirEstates" asp-route-id="@Model?.Id">Nieruchomości użytkownika</a> <p>|</p>
+        <a asp-action="Index">Przeglądaj profile właścicieli</a>
+       }
+     }
+    
+</div>

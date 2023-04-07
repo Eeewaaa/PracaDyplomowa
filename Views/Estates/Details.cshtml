@@ -1,0 +1,146 @@
+﻿@model RealEstate3.Models.Estate
+<style>
+
+</style>
+
+<div class="row">
+    <div class="col-sm-2"></div>
+    <div class="col-sm-8">
+        <div class="card">
+            <div id="carouselExampleIndicators" class="carousel slide" data-ride="carousel">
+                <div class="carousel-indicators carousel-dark">
+                    @{ var i = 0;
+                        @foreach(var item in Model.PicturesList){
+                            if (item == Model.PicturesList[0]){
+                                <button data-target="#carouselExampleIndicators" data-slide-to="@i" class="active"></button>
+                            } else {
+                                <button data-target="#carouselExampleIndicators" data-slide-to="@i" ></button>
+                            }
+                            i++;
+                        }     
+                    }
+                </div>
+                <div class="carousel-inner" id="caruzelPic" style="height: 510px">
+                    
+                    @foreach(var item in Model.PicturesList){
+                        if(item == Model.PicturesList[0]){
+                            <div class="carousel-item active" style="height: 500px">
+                                <img class="d-block w-auto mh-100 mx-auto" max-height="300px" src="@Model.PicturesList[0].PictureURL" alt="First slide">
+                            </div>
+                        } else {
+                            <div class="carousel-item" style="height: 500px">
+                                <img class="d-block w-auto mh-100 mx-auto" max-height="300px" src="@item.PictureURL" alt="First slide">
+                            </div>
+                        }
+                    }
+                </div>
+                <a class="carousel-control-prev carousel-dark" href="#carouselExampleIndicators" role="button" data-slide="prev">
+                    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                    <span class="sr-only">Poprzednie</span>
+                </a>
+                <a class="carousel-control-next carousel-dark" href="#carouselExampleIndicators" role="button" data-slide="next">
+                    <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                    <span class="sr-only">Następne</span>
+                </a>
+            </div>
+            <div class="card-body">
+                <h5 class="card-title">@Html.DisplayFor(model => model.Title)</h5>
+                <p class="card-text">@Html.DisplayFor(model => model.Description)</p>
+            </div>
+            <div class="row">
+            <div class="card-body col-sm-6">
+                <ul class="list-group list-group-flush">
+                    <li class="list-group-item">
+                        <h5>@Html.DisplayNameFor(model => model.Category)</h5>
+                        <p>@Html.DisplayFor(model => model.Category.Name)</p>
+                    </li>
+                    <li class="list-group-item">
+                        <h5>@Html.DisplayNameFor(model => model.Address)</h5>
+                        <p>@Html.DisplayFor(model => model.Address.Street) @Html.DisplayFor(model => model.Address.Number)
+                            <br>
+                            @Html.DisplayFor(model => model.Address.PostalCode) Wrocław
+                        </p>
+                    </li>
+                    <li class="list-group-item">
+                        <h5>@Html.DisplayNameFor(model => model.Size)</h5>
+                        <p>@Html.DisplayFor(model => model.Size) m2</p>
+                    </li>
+                    <li class="list-group-item">
+                        <h5>@Html.DisplayNameFor(model => model.Rent)</h5>
+                        <p>@Html.DisplayFor(model => model.Rent) zł</p>
+                    </li>
+                </ul>
+            </div>
+            <div class="card-body col-sm-6">
+                    <ul class="list-group list-group-flush">
+                        <li class="list-group-item">
+                        <h5 >
+                        @Html.DisplayNameFor(model => model.Garden)
+                        </h5>
+                        <p >
+                        @Html.DisplayFor(model => model.Garden)
+                        </p>
+                 </li>
+                        <li class="list-group-item">
+                        <h5 >
+                         @Html.DisplayNameFor(model => model.Balcony)
+                        </h5>
+                        <p >
+                        @Html.DisplayFor(model => model.Balcony)
+                        </p>
+                        <br />
+                 </li>
+                        <li class="list-group-item">
+                        <h5>
+                        @Html.DisplayNameFor(model => model.PetFriendly)
+                        </h5>
+                        <p >
+                        @Html.DisplayFor(model => model.PetFriendly)
+                        </p>
+                 </li>
+                  <li class="list-group-item">
+                        <h5 >
+                        @Html.DisplayNameFor(model => model.AvaiableFrom)
+                        </h5>
+                        <p >
+                        @Html.DisplayFor(model => model.AvaiableFrom)
+                        </p>
+                  </li>
+                 </ul>
+            </div>
+            </div>
+                <div class="card-body">
+                    <div class="row">
+                    <div class="col-sm-6">
+                        <p>Właściciel: </p>
+                        <a asp-controller="Owners" asp-action="Details" asp-route-id="@Model.OwnerId" class="card-link">
+                            @Html.DisplayFor(model => model.Owner.Name) @Html.DisplayFor(model => model.Owner.Surname)
+                        </a>
+                    </div>
+                        
+                    <div class="col-sm-2 me-5">
+                        <img class="img-fluid" src="@Model.Owner.ProfilePictureUrl" />
+                    </div>
+                    </div>
+                       
+                    <a asp-action="Index" class="card-link">Wróć do wszystkich nieruchomości</a>
+                    <br />
+                @if (User.Identity.IsAuthenticated && (User.IsInRole("Admin") || User.IsInRole("Owner")))
+                {
+                     <a asp-action="Edit" asp-route-id="@Model?.Id">Edytuj</a>
+                    <br />
+                    <a asp-action="Delete" asp-route-id="@Model?.Id">Usuń</a>
+                    <br />
+                }
+                    <a asp-controller="Reservations" asp-action="AddToShoppingCart" asp-route-id="@Model?.Id" class="btn btn-success">Rezerwuj</a>
+                </div>
+        </div>
+    </div>
+    <div class="col-sm-2"></div>
+</div>
+
+
+
+
+
+

@@ -1,0 +1,51 @@
+﻿@model RealEstate3.Models.Estate
+
+@{
+    ViewData["Title"] = "Skasuj";
+}
+
+<h1>Czy na pewno chcesz usunąć nieruchomość? </h1>
+
+<div class="col-xl-2 col-lg-3 col-md-4 col-sm-6 col-12 border-primary mb-3">
+    <div class="card mb-3" style="max-width: 540px;">
+        <img src="@Model.PicturesList[0].PictureURL" class="card-img-top" max-height="300px" alt="@Model.PicturesList[0].OriginalName">
+
+        <div class="card-body">
+            <h5 class="card-title">
+                @Model.Title
+            </h5>
+        </div>
+        <ul class="list-group list-group-flush">
+            <li class="list-group-item">
+                <b>Status: </b>
+                @if (DateTime.Now <= Model.AvaiableFrom)
+                {
+                    <span class="badge bg-success text-white">Dostępne od @Model.AvaiableFrom.ToString("dd MMM yyyy")</span>
+                }
+                else
+                {
+                    <span class="badge bg-primary text-white">Niedostępne</span>
+                }
+            </li>
+            <li class="list-group-item"><b>Adres: </b>@Model.Address.Street @Model.Address.Number <br><span class="text-white">Adres:  </span>@Model.Address.PostalCode</li>
+            <li class="list-group-item"><b>Metraż: </b>@Model.Size m2</li>
+            <li class="list-group-item"><b>Czynsz: </b>@Model.Rent zł</li>
+        </ul>
+ <div class="card-body">
+
+<div class="form-group">
+    <form asp-action="Delete">
+        <input type="hidden" asp-for="Id" />
+        <input type="submit" value="Potwierdź" class="btn btn-danger float-right" />
+    </form>
+    |
+                @if (User.IsInRole("Owner"))
+                {
+                    <a asp-controller="Owners" asp-action="ShowMyEstates">Wróć do swoich nieruchomości</a>
+                }
+                else
+                {
+                   <a asp-action="Index">Powrót do wszystkich nieruchomości</a> 
+                }
+                
+</div>

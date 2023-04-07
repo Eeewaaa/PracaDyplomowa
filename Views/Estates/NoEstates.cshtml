@@ -1,0 +1,27 @@
+﻿
+@if (User.IsInRole("Owner"))
+{
+    <div class="row">
+        <div class="col-md-6 offset-3">
+        <h1 class="text-info">Nie masz żadnych przypisanych nieruchomości</h1>
+        <hr />
+        <a class="btn btn-outline-success" asp-controller="Estates" asp-action="Create">Dodaj nieruchomość</a>
+        lub
+        <a class="btn btn-outline-success" asp-controller="Estates" asp-action="Index">Wróć do strony głównej</a>
+        </div>
+    </div>
+}
+else
+{
+        <div class="row">
+            <div class="col-md-6 offset-3">
+            <h1 class="text-info">Użytkownik nie ma żadnych przypisanych nieruchomości</h1>
+            <hr /> 
+            <a class="btn btn-outline-success" asp-controller="Estates" asp-action="Index">Wróć do strony głównej</a>
+            lub
+            <a class="btn btn-outline-success" asp-controller="Estates" asp-action="Index">Wróc do listy właścicieli nieruchomości</a>
+            </div>
+        </div>
+}
+
+

@@ -1,0 +1,55 @@
+﻿@model List<Reservation>
+
+@{
+    ViewData["Title"] = "Wszystkie rezerwacje";
+}
+
+<div class="row">
+    <div class="col-md-8 offset-2">
+        <p>
+            <h4>Lista Twoich rezerwacji</h4>
+        </p>
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>ID zamówienia</th>
+                    <td>Nieruchomości</td>
+                    <th>Razem</th>
+                    @if(User.Identity.IsAuthenticated && User.IsInRole("Admin"))
+                    {
+                     <th>Użytkownik</th>    
+                    }
+                   
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var reservation in Model)
+                {
+                    <tr>
+                        <td class="align-middle">@reservation.Id</td>
+                        <td class="align-middle">
+                            <ul style="list-style-type:none">
+                                @foreach (var item in reservation.ReservationItems)
+                                {
+                                    <li>
+                                        <div class="alert alert-info" role="alert">
+                                            <span class="badge bg-success"> [@item.Estate.Title] </span>
+                                        </div>
+                                    </li>
+                                }    
+                            </ul>
+                        </td>
+                        <td class="align-middle">
+                            @reservation.ReservationItems.Select(m => m.Price).Sum().ToString()
+                        </td>
+                        @if (User.Identity.IsAuthenticated && User.IsInRole("Admin"))
+                        {
+                           <td class="align-middle">@reservation.User.UserName</td>
+                        }
+
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>

@@ -1,0 +1,108 @@
+﻿@model RealEstate3.Models.NewEstateVM
+
+@{
+    ViewData["Title"] = "Dodaj";
+}
+
+<h4>Dodaj nową nieruchomość</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="Create" enctype="multipart/form-data" asp-controller="Estates">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <label asp-for="Title" class="control-label"></label>
+                <input asp-for="Title" class="form-control" />
+                <span asp-validation-for="Title" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Description" class="control-label"></label>
+                <input asp-for="Description" class="form-control" />
+                <span asp-validation-for="Description" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="AvaiableFrom" class="control-label"></label>
+                <input asp-for="AvaiableFrom" class="form-control" />
+                <span asp-validation-for="AvaiableFrom" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Street" class="control-label"></label>
+                <input asp-for="Street" class="form-control" />
+                <span asp-validation-for="Street" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Number" class="control-label"></label>
+                <input asp-for="Number" class="form-control" />
+                <span asp-validation-for="Number" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="PostalCode" class="control-label"></label>
+                <input asp-for="PostalCode" class="form-control" />
+                <span asp-validation-for="PostalCode" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Size" class="control-label"></label>
+                <input asp-for="Size" class="form-control" />
+                <span asp-validation-for="Size" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Rent" class="control-label"></label>
+                <input asp-for="Rent" class="form-control" />
+                <span asp-validation-for="Rent" class="text-danger"></span>
+            </div>
+            <div class="form-group form-check">
+                <label class="form-check-label">
+                    <input class="form-check-input" asp-for="Garden" /> @Html.DisplayNameFor(model => model.Garden)
+                </label>
+            </div>
+            <div class="form-group form-check">
+                <label class="form-check-label">
+                    <input class="form-check-input" asp-for="Balcony" /> @Html.DisplayNameFor(model => model.Balcony)
+                </label>
+            </div>
+            <div class="form-group form-check">
+                <label class="form-check-label">
+                    <input class="form-check-input" asp-for="PetFriendly" /> @Html.DisplayNameFor(model => model.PetFriendly)
+                </label>
+            </div>
+            <div class="form-group">
+                <label asp-for="CategoryId" class="control-label"></label>
+                <select asp-for="CategoryId" class="form-control" asp-items="ViewBag.Categories"></select>
+                <span asp-validation-for="CategoryId" class="text-danger"></span>
+            </div>
+            @if(User.IsInRole("Admin"))
+            {
+            <div class="form-group">
+                <label asp-for="OwnerId" class="control-label"></label>
+                <select asp-for="OwnerId" class="form-control" asp-items="ViewBag.Owners"></select>
+                <span asp-validation-for="OwnerId" class="text-danger"></span>
+            </div>
+            }
+            
+            <div class="form-group">
+                <label asp-for="PictureFiles" class="control-label"></label>
+
+                <div class="custom-file">
+                    <input type="file" asp-for="PictureFiles" class="custom-file-input" id="customFile" multiple>
+                    <label class="custom-file-label" for="customFile">Choose file</label>
+                </div>
+                <span asp-validation-for="PictureFiles" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Create" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    @if(User.IsInRole("Admin"))
+    {
+        <a asp-action="Index">Powrót do wszystkich nieruchomości</a>
+    }
+    @if (User.IsInRole("Owner"))
+    {
+        <a asp-controller="Owner" asp-action="ShowMyEstates">Wróc do moich nieruchomości</a>
+    }
+</div>
+

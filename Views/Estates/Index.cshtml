@@ -1,0 +1,54 @@
+﻿@using System.Security.Claims;
+
+@model IEnumerable<Estate>
+
+@{
+    ViewData["Title"] = "Lista nieruchomości";
+}
+
+@await Html.PartialAsync("PartialViews/_CreateItem", "Estates")
+
+<div class="row">
+    @foreach (var item in Model)
+    {
+        <div class="col-xxl-2 col-xl-3 col-md-4 col-sm-6 col-12 border-primary mb-3">
+            <div class="card mb-3" style="max-width: 540px; height: 500px;">
+                <img src="@item.PicturesList[0].PictureURL" class="card-img-top" height="150px" alt="@item.PicturesList[0].OriginalName">
+             
+                <div class="card-body">
+                    <h5 class="card-title">
+                        @item.Title
+                        @if (User.Identity.IsAuthenticated)
+                        {
+                            if (User.IsInRole("Admin") || User.IsInRole("Owner"))
+                                {
+                                    <a class="float-right" asp-action="Edit" asp-route-id="@item.Id"><i class="bi bi-pencil-square"></i></a>
+                                }
+                        }
+
+                    </h5>
+                </div>
+                <ul class="list-group list-group-flush">
+                    <li class="list-group-item">
+                        <b>Status: </b>
+                        @if(DateTime.Now <= item.AvaiableFrom)
+                        {
+                            <span class="badge bg-success text-white">Dostępne od @item.AvaiableFrom.ToString("dd MMM yyyy")</span>
+                        }else
+                        {
+                            <span class="badge bg-primary text-white">Niedostępne</span>
+                        }
+                    </li>
+                    <li class="list-group-item"><b>Adres: </b>@item.Address.Street @item.Address.Number <br><span class="text-white">Adres:  </span>@item.Address.PostalCode</li>
+                    <li class="list-group-item"><b>Metraż: </b>@item.Size m2</li>
+                    <li class="list-group-item"><b>Czynsz: </b>@item.Rent zł</li>
+                </ul>
+                <div class="card-body">
+                    <a class="btn btn-primary float-right" asp-controller="Estates" asp-action="Details" asp-route-id="@item.Id"><i class="bi bi-eye"></i> Szczegóły</a>
+                    <a asp-controller="Reservations" asp-action="AddToShoppingCart" asp-route-id="@item.Id" class="btn btn-success"><i class="bi bi-house-add"></i>Rezerwuj</a>
+                </div>
+            </div>
+        </div>
+    }
+</div>
+
